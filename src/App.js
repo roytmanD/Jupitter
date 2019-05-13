@@ -21,6 +21,9 @@ import {Input, InputGroup, Button} from 'reactstrap';
 
 import $ from 'jquery';
 
+import JUP_LOGO from './images/IMG_JUP.PNG';
+import FormGroup from "reactstrap/es/FormGroup";
+
 const BASE_URL = 'https://api.mlab.com/api/1/databases/jupitter';
 const API_KEY = 'fsJGVMZJ2RYyINyuEhUMfuDgGzcBUEb3';
 
@@ -31,7 +34,9 @@ const customStyles = {
         right                 : 'auto',
         bottom                : 'auto',
         marginRight           : '-50%',
-        transform             : 'translate(-50%, -50%)'
+        transform             : 'translate(-50%, -50%)',
+        paddingLeft           : '0',
+        width                 : '50%'
     }
 };
 const sessionStorage = window.sessionStorage;
@@ -75,8 +80,6 @@ class App extends  React.Component{
             }
 
             const url = `${BASE_URL}/collections/posts?apiKey=${API_KEY}`;
-        console.log(BASE_URL);
-console.log(url);
         $.ajax({
             url: url,
             data: JSON.stringify(jupitData),
@@ -92,9 +95,10 @@ console.log(url);
 }
     render() {
 
-
-            if (sessionStorage.getItem('authStatus') !== this.props.authorization.status) {
-                store.dispatch(authAction);
+            if(sessionStorage.getItem('authStatus')) {
+                if (sessionStorage.getItem('authStatus') !== this.props.authorization.status) {
+                    store.dispatch(authAction);
+                }
             }
 
 if(this.props.authorization.status === 'AUTH'){
@@ -103,14 +107,17 @@ if(this.props.authorization.status === 'AUTH'){
         <Container>
             <Navbar><NavigationBar/></Navbar>
             <Row>
-                <div>
+                <div className='modal-container'>
                     <Modal style= {customStyles} isOpen={this.props.jupitModal.isOpen}>
-                   <h1>New jupit</h1>
+                        <div className='header-modal'><img src={JUP_LOGO} alt='jupitter' className='header-modal-logo'/></div>
+                        <FormGroup className='jupit-input-group'>
+                        <h1>New jupit</h1>
                         <InputGroup>
                             <Input id='jupitInput' placeholder="What's new?"/>
-                            <Button onClick={this.submitJupit}><strong>Jupit</strong></Button>
+                            <Button  onClick={this.submitJupit}><strong>Jupit</strong></Button>
                         </InputGroup>
-                    <button onClick={this.handleClose}>close</button>
+                        </FormGroup>
+                    <button className='close-modal' onClick={this.handleClose}><strong>X</strong></button>
                 </Modal> </div>
                 <FeedContainer/>
             </Row>
@@ -123,6 +130,7 @@ if(this.props.authorization.status === 'AUTH'){
             <div className='App'>
             <Switch>
                 <Route path='/auth'><Login/></Route>
+                <Route path='/' exact><Login/></Route>
                 <Route path='/sign-up'><Registration/></Route>
             </Switch>
             </div>

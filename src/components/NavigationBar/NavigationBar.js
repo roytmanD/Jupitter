@@ -6,6 +6,7 @@ import notification from "./images/IMG_NOTIFICATION.png";
 import messages from "./images/IMG_MSG.PNG";
 import def_profile_pic from "./images/IMG_PROFILE.png";
 import Search from './Search';
+import {Button} from "reactstrap";
 
 import {store} from '../../index';
 import {openJupitModalAction} from "../../actions/jupit-modal-action";
@@ -31,7 +32,7 @@ class NavigationBar extends React.Component{
                 <img onClick={this.dropdownUserMenu} id='logo' src={jup_logo} alt='jupitter-logo'/>
                 <div><Search id='search'/></div>
                 <div><img id='profile_pic' src={def_profile_pic} alt='Profile picture'/></div>
-                <button onClick={this.openModal}><strong>Jupit</strong></button>
+                <Button onClick={this.openModal}><strong>Jupit</strong></Button>
             </div>
         );
     }

@@ -1,11 +1,14 @@
 .navigation-bar{
     width: 100%;
-    height: 3.5em;
+    height: 4.9em;
     background-color: #740908;
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
     font-size: 10pt;
+    position: fixed;
+    top: 0;
+    border-bottom: 3px outset #960b0a;
 }
 
 .navigation-bar{

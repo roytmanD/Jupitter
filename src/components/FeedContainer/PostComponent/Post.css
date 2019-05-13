@@ -1,0 +1,20 @@
+div.post{
+    background-color: whitesmoke;
+    padding: 30px;
+    border: 2px solid #d7e2d9;
+    width: auto;
+}
+
+span.activity{
+    font-size: small;
+}
+img.activity{
+    height: 20px;
+    width: 20px;
+}
+
+button.delete-jupit{
+    border: 2px solid #d7e2d9;
+    color: #a9b4ab;
+    margin-left: 80%;
+}

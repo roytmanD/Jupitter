@@ -1,4 +1,8 @@
 .feed-container{
-    background-color: aqua;
-height: 1000px;
+    background-color: whitesmoke;
+    height: 500px;
+    width: 70%;
+    margin-left: 12%;
+    margin-top: 5%;
+    /*padding: 25px;*/
 }

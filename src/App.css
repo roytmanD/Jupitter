@@ -1,0 +1,43 @@
+.App {
+    background-color: rgba(195, 158, 33, 0.19);
+height: 700px;
+    width: 100%;
+    position: absolute;
+    height: 500%;
+}
+
+.jupit-input-group{
+   margin-left: 5em;
+}
+
+#jupitInput{
+    width: 75%;
+height: 30px;
+    font-size: large;
+}
+.header-modal{
+
+    width: 120%;
+    height: 5%;
+    background-color: #740908;
+    margin-left: 0;
+}
+.header-modal-logo{
+    margin-left: 10%;
+
+    height: 45px;
+    width: 45px;
+}
+
+.close-modal{
+    background-color: rgba(255, 0, 0, 0.69);
+    color: white;
+    border: 1px outset lightgray;
+    margin-top: 1em;
+    float: right;
+    margin-right: 10em;
+}
+
+.modal-container{
+    width: 400px;
+}

@@ -3,6 +3,7 @@ import './FeedContainer.css';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import $ from 'jquery';
 import Post from './PostComponent/Post';
+import uuid from 'uuid';
 
 const BASE_URL = 'https://api.mlab.com/api/1/databases/jupitter';
 const API_KEY = 'fsJGVMZJ2RYyINyuEhUMfuDgGzcBUEb3';
@@ -18,15 +19,14 @@ let skip = 0;
     fetchPosts(author = 'from all'){
 
 
-    let url = `https://api.mlab.com/api/1/databases/jupitter/collections/posts?s={"absoluteRelevance":1}&sk=${skip}&l=${load}&apiKey=${API_KEY}`
+    let url = `${BASE_URL}/collections/posts?s={"absoluteRelevance":1}&sk=${skip}&l=${load}&apiKey=${API_KEY}`
 
 
         $.ajax({url}).then(response =>{
-            console.log(response);
             response.forEach(postJson =>{
 
                 let postData = {
-                    postId: postJson.postId,
+                    postId: postJson._id,
                     text: postJson.text,
                     type: postJson.type,
                     date: postJson.date,
@@ -42,19 +42,15 @@ let skip = 0;
                             replies: postJson.activity.replies
                         }
                 }
-                console.log(postData)
                 items.push(postData);
             });
 
-            console.log(items);
         });
 
         skip+=load;
    }
 
     render() {
-
-    console.log(items);
 
         return(
             <div className="feed-container">
@@ -73,10 +69,10 @@ let skip = 0;
                              name={item.author.name}
                              username={item.author.username}
                              activity={item.activity}
-                             key={item.postId}
+                             key={`post${uuid()}`}
+                             postId={item.postId}
                          />
                      )}
-                    {console.log(items)}
                 </InfiniteScroll>
             </div>
         );
