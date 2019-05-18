@@ -1,0 +1,54 @@
+div.advanced-search{
+    margin-top: 4.2em;
+    width: 100%;
+    height: 5%;
+}
+span.keyword-bar{
+    width: 100%;
+    height: 2em;
+    background-color: #966a49;
+    font-size: 24pt;
+    text-align: center;
+}
+
+.search-by{
+    /*style links*/
+}
+
+
+.cancel-search{
+    background-color: rgba(255, 0, 0, 0.69);
+    color: white;
+    border: 1px outset lightgray;
+    margin-top: 1em;
+    float: right;
+    margin-right: 10em;
+}
+
+
+  ul.advanced-search {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #d66a3f;
+      width: 200px;
+      width: 100%;
+  }
+
+li{
+    float: left;
+}
+
+li a{
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* Change the link color to #111 (black) searchMode hover */
+li a:hover {
+    background-color: rgba(251, 138, 42, 0.7);
+}

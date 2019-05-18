@@ -8,16 +8,20 @@ import {combineReducers} from "redux";
 import {Provider} from 'react-redux';
 import {authReducer} from './reducers/auth-reducer';
 import {jupitModalReducer} from "./reducers/jupit-modal-reducer";
+import {searchReducer} from "./reducers/search-mode-reducer";
+// import {searchSubj} from "./reducers/search-subj-reducer";
 
+import {searchResultsReducer} from "./reducers/searchResultsReducer";
 
 const allReducers = combineReducers(
     {
         authorization: authReducer,
-        jupitModal: jupitModalReducer
+        jupitModal: jupitModalReducer,
+        search: searchReducer,
+        searchResult: searchResultsReducer
     }
-)
-export const store = createStore(allReducers,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+);
+export const store = createStore(allReducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
 ReactDOM.render(
     <Provider store={store}>

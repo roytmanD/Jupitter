@@ -1,0 +1,44 @@
+
+ul.users-list {
+    list-style-type: none;
+    padding: 0;
+    overflow: hidden;
+    margin: 0 25% 0 25%;
+}
+
+li.user-list-item {
+    float: left;
+    width: 75%;
+    background-color: whitesmoke;
+    padding: 30px;
+    border: 2px solid #d7e2d9;
+
+}
+
+li.user-list-item a.user-list-item {
+    display: inline;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+/* Change the link color to #111 (black) searchMode hover */
+li a:hover {
+    background-color: rgba(251, 87, 35, 0.78);
+}
+
+
+
+span.user-list-item{
+    color: black;
+    font-size: large;
+}
+
+button.user-list-item{
+    border-radius: 50px;
+    border: 2px outset rgba(203, 128, 66, 0.77);
+    color: rgba(203, 128, 66, 0.77);
+    float: right;
+    float: bottom;
+}

@@ -6,17 +6,20 @@ import {connect} from "react-redux";
 import {Route, Switch} from "react-router";
 import {BrowserRouter} from "react-router-dom";
 import {store} from './index';
-
+import AdvancedSearchBar from './components/AdvancedSearchBar/AdvancedSearchBar';
 //from main cont
 import FeedContainer from "./components/FeedContainer/FeedContainer";
 import NavigationBar from './components/NavigationBar/NavigationBar';
+import UsersList from './components/UsersList/UsersList';
 import {Container, Row, Col, Navbar} from 'reactstrap';
 import uuid from 'uuid';
 
 import Modal from 'react-modal';
 
 import {closeJupitModalAction} from "./actions/jupit-modal-action";
+import  {searchAction} from "./actions/search-mode-action";
 import {authAction} from "./actions/auth-action";
+import {getUsersSearchResult} from "./actions/search-result-action";
 import {Input, InputGroup, Button} from 'reactstrap';
 
 import $ from 'jquery';
@@ -93,8 +96,15 @@ class App extends  React.Component{
         });
 
 }
+
+
+
+
     render() {
 
+
+
+        //in order to save auth status after update that follows action dispatch
             if(sessionStorage.getItem('authStatus')) {
                 if (sessionStorage.getItem('authStatus') !== this.props.authorization.status) {
                     store.dispatch(authAction);
@@ -119,7 +129,8 @@ if(this.props.authorization.status === 'AUTH'){
                         </FormGroup>
                     <button className='close-modal' onClick={this.handleClose}><strong>X</strong></button>
                 </Modal> </div>
-                <FeedContainer/>
+                {this.props.searchProp.by  ? <AdvancedSearchBar/> : null}
+                {store.getState().search.for=== 'users' ?<UsersList/> :<FeedContainer search={store.getState().search.by}/>}
             </Row>
         </Container>
     </div>
@@ -143,7 +154,15 @@ if(this.props.authorization.status === 'AUTH'){
 
 const mapStateToProps = state => ({
     authorization: state.authorization,
-    jupitModal: state.jupitModal
+    jupitModal: state.jupitModal,
+    searchProp: state.search,
+    searchResults: state.searchResult
 });
 
 export default connect(mapStateToProps)(App);
+
+
+//userList={store.getState().searchResult}
+
+
+// {this.props.searchProp.by || sessionStorage.getItem('search') ? <AdvancedSearchBar/> : null}

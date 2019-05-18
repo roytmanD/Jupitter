@@ -24,16 +24,16 @@ constructor(props){
     static displayName = "FeedContainer";
 
 
-    fetchPosts = () =>{
+    fetchPosts = (keyword = 'none') =>{
   let items=[];
     let url = `${BASE_URL}/collections/posts?s={"absoluteRelevance":1}&sk=${skip}&l=${load}&apiKey=${API_KEY}`
 
-         if(store.getState().search.by){
-            let q = {text:  {$regex : `.*${store.getState().search.by}.*`}};
+         if(keyword !== 'none'){
+            let q = {text:  {$regex : `.*${keyword}.*`}};
             url = `${BASE_URL}/collections/posts?q=${JSON.stringify(q)}&s={"absoluteRelevance":1}&sk=${skip}&l=${load}&apiKey=${API_KEY}`;
     }
 
-console.log(url);
+
         $.ajax({url}).then(response =>{
             response.forEach(postJson =>{
 
@@ -57,7 +57,7 @@ console.log(url);
                 items.push(postData);
             });
 
-            if(!store.getState().search.by) {
+            if(keyword ==='none') {
                 this.setState({items: this.state.items.concat(items)});
             }else{
                 this.setState({items:items});
@@ -69,7 +69,15 @@ console.log(url);
 
 
     render() {
+        // if(store.getState().search.by !== false && this.state.keyword !== store.getState().search.by ){
+        //     this.fetchPosts();
+        // }
 
+
+        // store.subscribe(()=>{
+        //     console.log(`new key: ${store.getState().search.by}`);
+        //     this.fetchPosts(store.getState().search.by);
+        // })
 
         return(
             <div className="feed-container">

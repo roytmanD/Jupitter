@@ -28,7 +28,7 @@ constructor(props){
                     | @{this.props.username} | {this.props.date}</span>
                 <p>{this.props.text}</p>
                 <span className='activity'>
-                {this.props.activity.likes ? this.props.activity.likes.length : 0} <img  onClick={this.handleLikeClick} className='activity' src={Like}/> {'   '}
+                {this.props.activity.likes ? this.state.likes.length : 0} <img  onClick={this.handleLikeClick} className='activity' src={Like}/> {'   '}
                     {this.props.activity.rejupits ? this.props.activity.rejupits.length : 0} <img className='activity' src={Rejupit}/> {'   '}
                     {this.props.activity.replies ? this.props.activity.replies.length : 0} <img className='activity' src={Comment}/>{'   '}
                 </span>
@@ -49,31 +49,20 @@ constructor(props){
        likes.add(currUser);
 
        console.log(likes.size, OGquantity);
+
        if (likes.size === OGquantity) {
            likes.delete(currUser);
-           let likesA = Array.from(likes);
-           //TODO update request to database delete current user's like
-           // const url = `${BASE_URL}/collections/posts/${postId.$oid}?apiKey=${API_KEY}`;
-           console.log(likesA);
-           $.ajax({
-               url: url,
-               data: JSON.stringify( { "$set" : {activity: { "likes" : likesA, "rejupits": this.props.rejupits, "replies": this.props.replies  } }} ),
-               type: 'PUT',
-               contentType: 'application/json'
-           }).then(response =>{
-               console.log(response);
-           });
-       } else {
-           let likesA = Array.from(likes);
-           $.ajax({
-               url: url,
-               data: JSON.stringify( { "$set" : {activity: { "likes" : likesA, "rejupits": this.props.rejupits, "replies": this.props.replies  } }} ),
-               type: 'PUT',
-               contentType: 'application/json'
-           }).then(res=>{
-               console.log(res);
-           });
        }
+       let likesA = Array.from(likes);
+       $.ajax({
+           url: url,
+           data: JSON.stringify( { "$set" : {activity: { "likes" : likesA, "rejupits": this.props.rejupits, "replies": this.props.replies  } }} ),
+           type: 'PUT',
+           contentType: 'application/json'
+       }).then(res=>{
+           console.log(res);
+           this.setState({likes:likesA});
+       });
 
    }
 
