@@ -57,11 +57,13 @@ console.log(url);
                 items.push(postData);
             });
 
-            if(!store.getState().search.by) {
-                this.setState({items: this.state.items.concat(items)});
-            }else{
-                this.setState({items:items});
-            }
+             console.log(items);
+            // if(!store.getState().search.by) {
+            //     this.setState({items: this.state.items.concat(items)});
+            // }else{
+            //     this.setState({items:items});
+            // }
+            this.setState({items: this.state.items.concat(items)});
             skip+=load;
         });
    }
@@ -70,31 +72,59 @@ console.log(url);
 
     render() {
 
-
-        return(
-            <div className="feed-container">
-                <InfiniteScroll
+if(!store.getState().search.by) {
+    return (
+        <div className="feed-container">
+            <InfiniteScroll
                 dataLength={this.state.items.length}
                 next={this.fetchPosts}
-                loader={<h4>Loading...<progress/></h4>}
+                loader={<h4>Loading...
+                    <progress/>
+                </h4>}
                 hasMore={true}
                 endMessage='Jupitter out of posts!'
                 refreshFunction={this.refresh}
-                >
-                    {this.state.items.map(item=>
-                         <Post
-                             text={item.text}
-                             date={item.date}
-                             name={item.author.name}
-                             username={item.author.username}
-                             activity={item.activity}
-                             key={`post${uuid()}`}
-                             postId={item.postId}
-                         />
-                     )}
-                </InfiniteScroll>
-            </div>
-        );
+            >
+                {this.state.items.map(item =>
+                    <Post
+                        text={item.text}
+                        date={item.date}
+                        name={item.author.name}
+                        username={item.author.username}
+                        activity={item.activity}
+                        key={`post${uuid()}`}
+                        postId={item.postId}
+                    />
+                )}
+            </InfiniteScroll>
+        </div>
+    );
+}else{
+    return(
+    <InfiniteScroll
+        dataLength={this.state.items.length}
+        next={this.fetchPosts}
+        loader={<h4>Loading...
+            <progress/>
+        </h4>}
+        hasMore={true}
+        endMessage='Jupitter out of posts!'
+        refreshFunction={this.refresh}
+    >
+        {this.state.items.map(item =>
+            <Post
+                text={item.text}
+                date={item.date}
+                name={item.author.name}
+                username={item.author.username}
+                activity={item.activity}
+                key={`post${uuid()}`}
+                postId={item.postId}
+            />
+        )}
+    </InfiniteScroll>
+    );
+}
     }
 }
 

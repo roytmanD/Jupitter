@@ -96,7 +96,7 @@ if(this.props.name!==undefined) {
     return (
         <div>
             {this.state.deleted ? null :  this.renderPost()}
-    </div>
+        </div>
     )
 }else{
     return(

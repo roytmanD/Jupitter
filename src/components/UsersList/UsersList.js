@@ -4,6 +4,7 @@ import {store} from "../../index";
 // import {getUsersSearchResult} from "../../actions/search-result-action";
 import uuid from 'uuid';
 import './UserList.css';
+import UserListItem from "./UserListItem/UserListItem";
 
 const BASE_URL = 'https://api.mlab.com/api/1/databases/jupitter';
 const API_KEY = 'fsJGVMZJ2RYyINyuEhUMfuDgGzcBUEb3';
@@ -43,13 +44,8 @@ class UsersList extends React.Component{
           <div className='users-list'>
               <ul className='users-list'>
                   {this.state.users.map(user =>
-                      <li className='user-list-item' key={uuid()}>
-                          <div>
-                              <a href={`jupitter/profile/${user.username}`} className='user-list-item'>    <span className='author user-list-item'>
-                    <strong>{user.name + ' '}</strong>
-                                   | @{user.username} </span> </a>
-                              <button className='user-list-item'>Follow</button>
-                          </div>
+                      <li className='user-list-item' key={`user${uuid()}`}>
+                        <UserListItem user={user}/>
                       </li>
 
                   )}
@@ -63,3 +59,10 @@ class UsersList extends React.Component{
 
 export default UsersList;
 
+                    //<div>
+                  {/*<a href={`jupitter/profile/${user.username}`} className='user-list-item'>    <span className='author user-list-item'>*/}
+                    {/*<strong>{user.name + ' '}</strong>*/}
+                                   {/*| @{user.username} </span> </a>*/}
+                  {/*<span>{user.activity.followers}Followers | {user.activity.following}Following</span>*/}
+                  {/*<button className='user-list-item'>Follow</button>*/}
+          {/*</div>*/}

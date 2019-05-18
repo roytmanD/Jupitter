@@ -2,6 +2,7 @@ div.advanced-search{
     margin-top: 4.2em;
     width: 100%;
     height: 5%;
+ border-bottom: 2px solid;
 }
 span.keyword-bar{
     width: 100%;
