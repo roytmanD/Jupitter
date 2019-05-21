@@ -11,21 +11,19 @@ import AdvancedSearchBar from './components/AdvancedSearchBar/AdvancedSearchBar'
 import FeedContainer from "./components/FeedContainer/FeedContainer";
 import NavigationBar from './components/NavigationBar/NavigationBar';
 import UsersList from './components/UsersList/UsersList';
-import {Container, Row, Col, Navbar} from 'reactstrap';
+import {Container, Row, Navbar} from 'reactstrap';
 import uuid from 'uuid';
 
 import Modal from 'react-modal';
 
 import {closeJupitModalAction} from "./actions/jupit-modal-action";
-import  {searchAction} from "./actions/search-mode-action";
-import {authAction} from "./actions/auth-action";
-import {getUsersSearchResult} from "./actions/search-result-action";
 import {Input, InputGroup, Button} from 'reactstrap';
 
 import $ from 'jquery';
 
 import JUP_LOGO from './images/IMG_JUP.PNG';
 import FormGroup from "reactstrap/es/FormGroup";
+import UserProfile from "./components/UserProfile/UserProfile";
 
 const BASE_URL = 'https://api.mlab.com/api/1/databases/jupitter';
 const API_KEY = 'fsJGVMZJ2RYyINyuEhUMfuDgGzcBUEb3';
@@ -46,8 +44,14 @@ const sessionStorage = window.sessionStorage;
 
 Modal.setAppElement('#root');
 
-class App extends  React.Component{
-
+ class App extends  React.Component{
+// constructor(props){
+//     super(props);
+//
+//     this.state = {
+//         profileComponent: null
+//     }
+// }
 
     handleClose = () => {
         store.dispatch(closeJupitModalAction);
@@ -59,7 +63,7 @@ class App extends  React.Component{
 
 
         const currentDate = new Date();
-        const date = `${currentDate.getDate()}/${currentDate.getMonth()}/${currentDate.getFullYear()}`
+        const date = `${currentDate.getDate()}/${currentDate.getMonth()}/${currentDate.getFullYear()}`;
 
         const absoluteRelevance = -Math.floor( Date.now() / 1000 ); //negative cause the more seconds gone since Epoch,
                                                                        // the less relevant is the post
@@ -80,7 +84,7 @@ class App extends  React.Component{
                     rejupits: [],
                     replies: []
                 }
-            }
+            };
 
             const url = `${BASE_URL}/collections/posts?apiKey=${API_KEY}`;
         $.ajax({
@@ -95,23 +99,26 @@ class App extends  React.Component{
             this.handleClose();
         });
 
-}
+};
 
 
-
+// componentDidUpdate(prevProps, prevState, snapshot) {
+//        if (prevProps.profile.username !== this.props.profile.username){
+//
+//        }
+// }
 
     render() {
 
 
-
         //in order to save auth status after update that follows action dispatch
-            if(sessionStorage.getItem('authStatus')) {
-                if (sessionStorage.getItem('authStatus') !== this.props.authorization.status) {
-                    store.dispatch(authAction);
-                }
-            }
+        //     if(sessionStorage.getItem('authStatus')) {
+        //         if (sessionStorage.getItem('authStatus') !== this.props.authorization.status) {
+        //             store.dispatch(authAction);
+        //         }
+        //     } //TODO внесена поправка в  условие рендера FeedContainer/registraion-login, в связи с этим возможно надо что то изменить
 
-if(this.props.authorization.status === 'AUTH'){
+if(this.props.authorization.status === 'AUTH' || sessionStorage.getItem('authStatus')==='AUTH'){
     return (
     <div className="App">
         <Container>
@@ -129,6 +136,7 @@ if(this.props.authorization.status === 'AUTH'){
                         </FormGroup>
                     <button className='close-modal' onClick={this.handleClose}><strong>X</strong></button>
                 </Modal> </div>
+                {typeof this.props.profile.username  === 'string' ? <UserProfile username={this.props.profile.username}/>: null}
                 {this.props.searchProp.by  ? <AdvancedSearchBar/> : null}
                 {store.getState().search.for=== 'users' ?<UsersList/> :<FeedContainer search={store.getState().search.by}/>}
             </Row>
@@ -156,7 +164,8 @@ const mapStateToProps = state => ({
     authorization: state.authorization,
     jupitModal: state.jupitModal,
     searchProp: state.search,
-    searchResults: state.searchResult
+    searchResults: state.searchResult,
+    profile: state.profile
 });
 
 export default connect(mapStateToProps)(App);
@@ -166,3 +175,6 @@ export default connect(mapStateToProps)(App);
 
 
 // {this.props.searchProp.by || sessionStorage.getItem('search') ? <AdvancedSearchBar/> : null}
+
+
+//   {typeof this.props.profile.username  === 'string' ? <UserProfile username={this.props.profile.username}/>: null}

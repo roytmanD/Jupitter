@@ -4,6 +4,8 @@ import Like from './images/LIKE.png';
 import Comment from './images/COMMENT.png';
 import Rejupit from './images/REJUPIT.png';
 import $ from 'jquery';
+import {store} from "../../../index";
+import {profileAction} from "../../../actions/profile-action";
 
 const BASE_URL = 'https://api.mlab.com/api/1/databases/jupitter';
 const API_KEY = 'fsJGVMZJ2RYyINyuEhUMfuDgGzcBUEb3';
@@ -20,12 +22,20 @@ constructor(props){
     }
 }
 
+toProfile = (e) =>{
+    e.stopPropagation();
+    e.nativeEvent.stopImmediatePropagation();
+    store.dispatch(profileAction(this.props.username));
+}
+
     renderPost = () =>{
         return (
             <div className='post'>
+                <a href='#' onClick={(e)=>{this.toProfile(e)}} className='post'>
                 <span className='author'>
                     <strong>{this.props.name}</strong>
                     | @{this.props.username} | {this.props.date}</span>
+                </a>
                 <p>{this.props.text}</p>
                 <span className='activity'>
                 {this.props.activity.likes ? this.state.likes.length : 0} <img  onClick={this.handleLikeClick} className='activity' src={Like}/> {'   '}
@@ -43,12 +53,9 @@ constructor(props){
        const url = `${BASE_URL}/collections/posts/${postId.$oid}?apiKey=${API_KEY}`;
        let likes = new Set(this.state.likes);
        const currUser = sessionStorage.getItem('currUser');
-       console.log(this.props)
-       console.log(likes);
        const OGquantity = likes.size;
        likes.add(currUser);
 
-       console.log(likes.size, OGquantity);
 
        if (likes.size === OGquantity) {
            likes.delete(currUser);
@@ -60,7 +67,6 @@ constructor(props){
            type: 'PUT',
            contentType: 'application/json'
        }).then(res=>{
-           console.log(res);
            this.setState({likes:likesA});
        });
 

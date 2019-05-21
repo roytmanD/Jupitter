@@ -4,7 +4,7 @@ export const authAction = {
         {status: 'AUTH'}
 };
 
-export const disAuthAction = {
+export const logoutAction = {
     type: 'out',
     payload:
         {status: 'NON-AUTH'}

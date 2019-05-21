@@ -18,7 +18,8 @@ constructor(props){
 
     this.state = {
         keyword: store.getState().search.by,
-        items:[]
+        items:[],
+        specifiedItems:[]
     }
 }
     static displayName = "FeedContainer";
@@ -26,14 +27,21 @@ constructor(props){
 
     fetchPosts = () =>{
   let items=[];
-    let url = `${BASE_URL}/collections/posts?s={"absoluteRelevance":1}&sk=${skip}&l=${load}&apiKey=${API_KEY}`
+    let url = `${BASE_URL}/collections/posts?s={"absoluteRelevance":1}&sk=${skip}&l=${load}&apiKey=${API_KEY}`;
 
-         if(store.getState().search.by){
-            let q = {text:  {$regex : `.*${store.getState().search.by}.*`}};
+         // if(store.getState().search.by){
+        if(this.props.username){
+            // let q = {text:  {$regex : `.*${store.getState().search.by}.*`}};
+            let q = {text:  {$regex : `.*${this.props.username}.*`}};
             url = `${BASE_URL}/collections/posts?q=${JSON.stringify(q)}&s={"absoluteRelevance":1}&sk=${skip}&l=${load}&apiKey=${API_KEY}`;
     }
+        if(typeof store.getState().profile.username === 'string'){
+     //       let q = {"author.username": store.getState().profile.username};
+            let q = {"author.username": this.props.username};
+            url = `${BASE_URL}/collections/posts?q=${JSON.stringify(q)}&s={"absoluteRelevance":1}&sk=${skip}&l=${load}&apiKey=${API_KEY}`
+        } // TODO specifying feed for inProfile mode. does not work yet.
 
-console.log(url);
+        console.log(url);
         $.ajax({url}).then(response =>{
             response.forEach(postJson =>{
 
@@ -53,30 +61,38 @@ console.log(url);
                             rejupits: postJson.activity.rejupits,
                             replies: postJson.activity.replies
                         }
-                }
+                };
                 items.push(postData);
             });
 
-             console.log(items);
-            // if(!store.getState().search.by) {
-            //     this.setState({items: this.state.items.concat(items)});
-            // }else{
-            //     this.setState({items:items});
-            // }
-            this.setState({items: this.state.items.concat(items)});
             skip+=load;
-        });
+            if(this.props.username){
+                this.setState({specifiedItems: this.state.items.concat(items)});
+            }else {
+                this.setState({items: this.state.items.concat(items)});//TODO thats where the shit is going on. need to
+            }
+            });
+   };
+
+
+componentWillUpdate(nextProps, nextState, nextContext) {
+   if( nextProps.username !==this.props.username){
+
    }
-
-
+}
 
     render() {
+
+    let itemsToRender = this.state.items;
+    if(typeof this.props.username === 'string'){
+        itemsToRender = this.state.specifiedItems;
+    }
 
 if(!store.getState().search.by) {
     return (
         <div className="feed-container">
             <InfiniteScroll
-                dataLength={this.state.items.length}
+                dataLength={itemsToRender.length}
                 next={this.fetchPosts}
                 loader={<h4>Loading...
                     <progress/>
@@ -85,7 +101,7 @@ if(!store.getState().search.by) {
                 endMessage='Jupitter out of posts!'
                 refreshFunction={this.refresh}
             >
-                {this.state.items.map(item =>
+                {itemsToRender.map(item =>
                     <Post
                         text={item.text}
                         date={item.date}
@@ -102,7 +118,7 @@ if(!store.getState().search.by) {
 }else{
     return(
     <InfiniteScroll
-        dataLength={this.state.items.length}
+        dataLength={itemsToRender.length}
         next={this.fetchPosts}
         loader={<h4>Loading...
             <progress/>
@@ -111,7 +127,7 @@ if(!store.getState().search.by) {
         endMessage='Jupitter out of posts!'
         refreshFunction={this.refresh}
     >
-        {this.state.items.map(item =>
+        {itemsToRender.map(item =>
             <Post
                 text={item.text}
                 date={item.date}

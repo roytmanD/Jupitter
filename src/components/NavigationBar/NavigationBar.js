@@ -10,7 +10,7 @@ import {Button} from "reactstrap";
 
 import {store} from '../../index';
 import {openJupitModalAction} from "../../actions/jupit-modal-action";
-
+import {closeProfile, profileAction} from "../../actions/profile-action";
 
 class NavigationBar extends React.Component{
 
@@ -19,19 +19,28 @@ class NavigationBar extends React.Component{
         store.dispatch(openJupitModalAction);
     }
 
-    dropdownUserMenu = () => {
-        //TODO
+    handleHomeClick = () =>{
+        store.dispatch(closeProfile);
+    }
+
+    toProfile = (e) =>{
+        e.stopPropagation();
+        e.nativeEvent.stopImmediatePropagation();
+        console.log('hmm');
+        store.dispatch(profileAction(sessionStorage.getItem('currUser')));
     }
 
     render() {
         return(
             <div className="navigation-bar">
-                <div><img id='home' src={home} alt='Home'/>Home</div>
+                <div onClick={this.handleHomeClick}><img id='home' src={home} alt='Home'/>Home</div>
                 <div><img id="notifications" src={notification} alt='Notifications'/>Notifications</div>
                 <div><img id="msg" src={messages} alt='Messages'/>Messages</div>
-                <img onClick={this.dropdownUserMenu} id='logo' src={jup_logo} alt='jupitter-logo'/>
+                <img id='logo' src={jup_logo} alt='jupitter-logo'/>
                 <div><Search id='search'/></div>
-                <div><img id='profile_pic' src={def_profile_pic} alt='Profile picture'/></div>
+                <div>
+                    <img onClick={(e)=>{this.toProfile(e)}} id='profile_pic' src={def_profile_pic} alt='Profile picture'/>
+                </div>
                 <Button onClick={this.openModal}><strong>Jupit</strong></Button>
             </div>
         );

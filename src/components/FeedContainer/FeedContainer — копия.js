@@ -9,7 +9,7 @@ import {store} from '../../index';
 
 const BASE_URL = 'https://api.mlab.com/api/1/databases/jupitter';
 const API_KEY = 'fsJGVMZJ2RYyINyuEhUMfuDgGzcBUEb3';
-let load = 5;
+let load = 15;
 let skip = 0;
 
 class FeedContainer extends React.Component{
@@ -24,16 +24,21 @@ constructor(props){
     static displayName = "FeedContainer";
 
 
-    fetchPosts = (keyword = 'none') =>{
+    fetchPosts = () =>{
   let items=[];
-    let url = `${BASE_URL}/collections/posts?s={"absoluteRelevance":1}&sk=${skip}&l=${load}&apiKey=${API_KEY}`
+    let url = `${BASE_URL}/collections/posts?s={"absoluteRelevance":1}&sk=${skip}&l=${load}&apiKey=${API_KEY}`;
 
-         if(keyword !== 'none'){
-            let q = {text:  {$regex : `.*${keyword}.*`}};
+         if(store.getState().search.by){
+            let q = {text:  {$regex : `.*${store.getState().search.by}.*`}};
             url = `${BASE_URL}/collections/posts?q=${JSON.stringify(q)}&s={"absoluteRelevance":1}&sk=${skip}&l=${load}&apiKey=${API_KEY}`;
     }
 
+        // if(typeof store.getState().profile.username === 'string'){
+        //     let q = {author: store.getState().profile.username };
+        //     url = `${BASE_URL}/collections/posts?q=${JSON.stringify(q)}&s={"absoluteRelevance":1}&sk=${skip}&l=${load}&apiKey=${API_KEY}`
+        // } // TODO specifying feed for inProfile mode. does not work yet.
 
+        console.log(url);
         $.ajax({url}).then(response =>{
             response.forEach(postJson =>{
 
@@ -53,56 +58,74 @@ constructor(props){
                             rejupits: postJson.activity.rejupits,
                             replies: postJson.activity.replies
                         }
-                }
+                };
                 items.push(postData);
             });
 
-            if(keyword ==='none') {
-                this.setState({items: this.state.items.concat(items)});
-            }else{
-                this.setState({items:items});
-            }
+             console.log(items);
+            this.setState({items: this.state.items.concat(items)});
             skip+=load;
         });
-   }
+   };
+
 
 
 
     render() {
-        // if(store.getState().search.by !== false && this.state.keyword !== store.getState().search.by ){
-        //     this.fetchPosts();
-        // }
 
-
-        // store.subscribe(()=>{
-        //     console.log(`new key: ${store.getState().search.by}`);
-        //     this.fetchPosts(store.getState().search.by);
-        // })
-
-        return(
-            <div className="feed-container">
-                <InfiniteScroll
+if(!store.getState().search.by) {
+    return (
+        <div className="feed-container">
+            <InfiniteScroll
                 dataLength={this.state.items.length}
-                next={this.fetchPosts}
-                loader={<h4>Loading...<progress/></h4>}
+                next={this.fetchPosts()}
+                loader={<h4>Loading...
+                    <progress/>
+                </h4>}
                 hasMore={true}
                 endMessage='Jupitter out of posts!'
                 refreshFunction={this.refresh}
-                >
-                    {this.state.items.map(item=>
-                         <Post
-                             text={item.text}
-                             date={item.date}
-                             name={item.author.name}
-                             username={item.author.username}
-                             activity={item.activity}
-                             key={`post${uuid()}`}
-                             postId={item.postId}
-                         />
-                     )}
-                </InfiniteScroll>
-            </div>
-        );
+            >
+                {this.state.items.map(item =>
+                    <Post
+                        text={item.text}
+                        date={item.date}
+                        name={item.author.name}
+                        username={item.author.username}
+                        activity={item.activity}
+                        key={`post${uuid()}`}
+                        postId={item.postId}
+                    />
+                )}
+            </InfiniteScroll>
+        </div>
+    );
+}else{
+    return(
+    <InfiniteScroll
+        dataLength={this.state.items.length}
+        next={this.fetchPosts}
+        loader={<h4>Loading...
+            <progress/>
+        </h4>}
+        hasMore={true}
+        endMessage='Jupitter out of posts!'
+        refreshFunction={this.refresh}
+    >
+        {this.state.items.map(item =>
+            <Post
+                text={item.text}
+                date={item.date}
+                name={item.author.name}
+                username={item.author.username}
+                activity={item.activity}
+                key={`post${uuid()}`}
+                postId={item.postId}
+            />
+        )}
+    </InfiniteScroll>
+    );
+}
     }
 }
 

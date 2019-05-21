@@ -18,3 +18,18 @@ button.delete-jupit{
     color: #a9b4ab;
     margin-left: 80%;
 }
+
+a.post{
+    text-decoration: none;
+}
+
+a.post:link {
+    color: Black;
+}
+a.post:visited {
+    color: Black;
+}
+a.post:hover {
+    color: #2d3979;
+
+}
