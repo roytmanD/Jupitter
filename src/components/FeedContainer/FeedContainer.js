@@ -54,18 +54,16 @@ constructor(props){
    query = {"author.username": {$in : authorsToDisplay}}; //this query specifies who's posts to display
    url = `${BASE_URL}/collections/posts?q=${JSON.stringify(query)}&s={"absoluteRelevance":1}&sk=${skip}&l=${load}&apiKey=${API_KEY}`;
 
-         // if(store.getState().search.by){
-        if(this.props.username){
-            // let q = {text:  {$regex : `.*${store.getState().search.by}.*`}};
-            let q = {text:  {$regex : `.*${this.props.username}.*`}}; //TODO username? keyword must be here.
+          if(store.getState().search.by){
+            let q = {text:  {$regex : `.*${store.getState().search.by}.*`}};
             url = `${BASE_URL}/collections/posts?q=${JSON.stringify(q)}&s={"absoluteRelevance":1}&sk=${skip}&l=${load}&apiKey=${API_KEY}`;
     }
         if(typeof store.getState().profile.username === 'string'){
-     //       let q = {"author.username": store.getState().profile.username};
+            let profileUser = store.getState().profile.username;
+            let query = {$or:[{"activity.rejupits": profileUser},{"author.username":profileUser}]};
             skip=0;
-            let q = {"author.username": store.getState().profile.username};
-            url = `${BASE_URL}/collections/posts?q=${JSON.stringify(q)}&s={"absoluteRelevance":1}&sk=${skip}&l=${load}&apiKey=${API_KEY}`
-        } // TODO specifying feed for inProfile mode. does not work yet.
+            url = `${BASE_URL}/collections/posts?q=${JSON.stringify(query)}&s={"absoluteRelevance":1}&sk=${skip}&l=${load}&apiKey=${API_KEY}`
+        } 
 
         console.log(url);
         $.ajax({url}).then(response =>{
@@ -101,7 +99,7 @@ constructor(props){
                 this.setState({
                     items: this.state.items.concat(items),
                     specifiedItems: []
-                });//TODO thats where the shit is going on. need to
+                });
             }
             });
    };
@@ -117,32 +115,36 @@ constructor(props){
 if(!store.getState().search.by) {
     return (
         <div className="feed-container">
-            <InfiniteScroll
-                dataLength={itemsToRender.length}
-                next={this.fetchPosts}
-                loader={<h4>Loading...
-                    <progress/>
-                </h4>}
-                hasMore={true}
-                endMessage='Jupitter out of posts!'
-                refreshFunction={this.refresh}
-            >
-                {itemsToRender.map(item =>
-                    <Post
-                        text={item.text}
-                        date={item.date}
-                        name={item.author.name}
-                        username={item.author.username}
-                        activity={item.activity}
-                        key={`post${uuid()}`}
-                        postId={item.postId}
-                    />
-                )}
-            </InfiniteScroll>
+
+                <InfiniteScroll
+                    dataLength={itemsToRender.length}
+                    next={this.fetchPosts}
+                    loader={<h4>Loading...
+                        <progress/>
+                    </h4>}
+                    hasMore={true}
+                    endMessage='Jupitter out of posts!'
+                    refreshFunction={this.refresh}
+                >
+                    {itemsToRender.map(item =>
+                        <Post
+                            text={item.text}
+                            date={item.date}
+                            name={item.author.name}
+                            username={item.author.username}
+                            activity={item.activity}
+                            key={`post${uuid()}`}
+                            postId={item.postId}
+                            isRepost={store.getState().profile.username && item.author.username!== store.getState().profile.username}
+                        />
+                    )}
+                </InfiniteScroll>
+
         </div>
     );
 }else{
     return(
+        <div className="feed-container">
     <InfiniteScroll
         dataLength={itemsToRender.length}
         next={this.fetchPosts}
@@ -152,7 +154,7 @@ if(!store.getState().search.by) {
         hasMore={true}
         endMessage='Jupitter out of posts!'
         refreshFunction={this.refresh}
-    >
+    >{itemsToRender.length === 0 ?  <p className='empty-feed-msg'>You don't have any jupits in feed! Jupit something or follow someone who did.</p>: null}
         {itemsToRender.map(item =>
             <Post
                 text={item.text}
@@ -165,6 +167,7 @@ if(!store.getState().search.by) {
             />
         )}
     </InfiniteScroll>
+        </div>
     );
 }
     }
@@ -174,10 +177,3 @@ if(!store.getState().search.by) {
 export default FeedContainer;
 
 
-//TODO search for only posts from the specified author
-
-//store.getState().search.by
-// if(author !== 'from all'){
-//     let q = {author: author};
-//     url = `${BASE_URL}/collections/posts?q=${JSON.stringify(q)}&s={"absoluteRelevance":1}&sk=${skip}&l=${load}&apiKey=${API_KEY}`;
-// }

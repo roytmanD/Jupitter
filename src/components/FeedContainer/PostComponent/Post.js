@@ -31,6 +31,7 @@ toProfile = (e) =>{
     renderPost = () =>{
         return (
             <div className='post'>
+                {!this.props.isRepost ? null : <p className='repost-from'>Rejupitted ◄╝</p> }
                 <a href='#' onClick={(e)=>{this.toProfile(e)}} className='post'>
                 <span className='author'>
                     <strong>{this.props.name}</strong>

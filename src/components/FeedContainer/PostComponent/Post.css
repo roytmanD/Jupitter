@@ -33,3 +33,8 @@ a.post:hover {
     color: #2d3979;
 
 }
+p.repost-from{
+    color: gray;
+    font-size: smaller;
+    float: right;
+}

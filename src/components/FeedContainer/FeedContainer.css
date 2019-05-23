@@ -1,8 +1,14 @@
 .feed-container{
-    background-color: whitesmoke;
-    height: 500px;
+    /*background-color: whitesmoke;*/
+    height: min-content;
     width: 70%;
     margin-left: 12%;
     margin-top: 5%;
     /*padding: 25px;*/
+}
+
+p.empty-feed-msg{
+    margin: 20%;
+    width: 100%;
+
 }
