@@ -10,7 +10,7 @@ import {authReducer} from './reducers/auth-reducer';
 import {jupitModalReducer} from "./reducers/jupit-modal-reducer";
 import {searchReducer} from "./reducers/search-mode-reducer";
 // import {searchSubj} from "./reducers/search-subj-reducer";
-import {profileReducer} from "./reducers/ProfileReducer";
+import {profileReducer} from "./reducers/profile-reducer";
 
 import {searchResultsReducer} from "./reducers/searchResultsReducer";
 

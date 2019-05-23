@@ -8,7 +8,7 @@ export function searchResultsReducer(state ={users:[{username: 'kolya69', name:'
             return {};
 
         default:
-            return state
+            return {...state}
     }
 
 }

@@ -24,7 +24,7 @@ class UsersList extends React.Component{
 
         $.ajax({url: url}).then(response=>{
             if(response.length===0){
-                alert('no users found!! gottcha render some shit instead');
+                this.setState({keyword: 'no users found'});
             }else{
                 // store.dispatch(getUsersSearchResult(response));
                 this.setState({users:response, keyword: store.getState().search.by});
@@ -37,20 +37,26 @@ class UsersList extends React.Component{
         if(this.state.users.length === 0 || store.getState().search.by !== this.state.keyword){
             this.getUserListBy(store.getState().search.by);
         }
+        if(this.state.keyword === 'no users found'){
+            return(
+                <div className='users-list'>
+                    <p className='no-users-msg'>Unfortunately, no users found by "{store.getState().search.by}" keyword.</p>
+                </div>
+            );
+        }else {
+            return (
+                <div className='users-list'>
+                    <ul className='users-list'>
+                        {this.state.users.map(user =>
+                            <li className='user-list-item' key={`user${uuid()}`}>
+                                <UserListItem user={user}/>
+                            </li>
+                        )}
+                    </ul>
+                </div>
 
-        return(
-          <div className='users-list'>
-              <ul className='users-list'>
-                  {this.state.users.map(user =>
-                      <li className='user-list-item' key={`user${uuid()}`}>
-                        <UserListItem user={user}/>
-                      </li>
-
-                  )}
-              </ul>
-          </div>
-
-        );
+            );
+        }
     }
 }
 

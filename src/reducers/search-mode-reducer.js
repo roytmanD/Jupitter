@@ -1,14 +1,16 @@
 export function searchReducer(state = {for: 'posts', by: false}, action) {
     switch (action.type) {
         case 'search':
-            return {for: state.for, by: action.payload.by};
+            return {...state, for: state.for, by: action.payload.by};
         case 'subj':
-            return {for: action.payload.for, by: state.by}
+            return {...state, for: action.payload.for, by: state.by}
         case 'cancelSearch':
-            return {by: false};
+            return {...state,for: 'posts', by: false};
+        case 'toProfile':
+            return {...state, for: 'posts', by: false}
         default:
 
-            return state;
+            return {...state};
 
     }
 }

@@ -26,7 +26,6 @@ class NavigationBar extends React.Component{
     toProfile = (e) =>{
         e.stopPropagation();
         e.nativeEvent.stopImmediatePropagation();
-        console.log('hmm');
         store.dispatch(profileAction(sessionStorage.getItem('currUser')));
     }
 

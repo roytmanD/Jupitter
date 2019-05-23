@@ -66,7 +66,8 @@ class UserProfile extends React.Component {
                     <a className='numbers' href='#'>{this.state.jupits}</a> Jupits
                    <a className='numbers' href='#'> {this.state.followers.length}</a> Followers
                     <a className='numbers' href='#'>{this.state.following.length}</a> Following
-                        <button className='sign-out' onClick={this.logOut}>Sign out</button>
+                      {  store.getState().profile.username === sessionStorage.getItem('currUser') ?
+                          <button className='sign-out' onClick={this.logOut}>Sign out</button> : null }
                   </div>
             </div>
         );

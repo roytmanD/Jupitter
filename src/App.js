@@ -45,13 +45,6 @@ const sessionStorage = window.sessionStorage;
 Modal.setAppElement('#root');
 
  class App extends  React.Component{
-// constructor(props){
-//     super(props);
-//
-//     this.state = {
-//         profileComponent: null
-//     }
-// }
 
     handleClose = () => {
         store.dispatch(closeJupitModalAction);
@@ -93,7 +86,6 @@ Modal.setAppElement('#root');
             type: 'POST',
             contentType: 'application/json'
         }).then(res=>{
-            console.log(res);
             alert('Your jupit was submited!');
             //TODO after jupit was saved to db It should appear at the top of feed => we need to update feed => to dispatch action
             this.handleClose();
@@ -102,14 +94,7 @@ Modal.setAppElement('#root');
 };
 
 
-// componentDidUpdate(prevProps, prevState, snapshot) {
-//        if (prevProps.profile.username !== this.props.profile.username){
-//
-//        }
-// }
-
     render() {
-
 
         //in order to save auth status after update that follows action dispatch
         //     if(sessionStorage.getItem('authStatus')) {
@@ -169,12 +154,3 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps)(App);
-
-
-//userList={store.getState().searchResult}
-
-
-// {this.props.searchProp.by || sessionStorage.getItem('search') ? <AdvancedSearchBar/> : null}
-
-
-//   {typeof this.props.profile.username  === 'string' ? <UserProfile username={this.props.profile.username}/>: null}

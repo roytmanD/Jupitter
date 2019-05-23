@@ -22,12 +22,19 @@ class Login extends React.Component{
             if(res.length===0){
                 alert('Invalid login or password');
             }else{
+                //before alerting it's a nice place to start asycn action to finish while user is killing the alert
+                //gonna receive currUsers 'following' list to specify his home feed by their usernames
+
+                //i guess we do have users object id in response so it's a good idea to use it for following request and even to save in state
+                // url = `${BASE_URL}/collections/users`;
+                console.log(res[0]._id.$oid);
                 alert('Welcome!');
                 sessionStorage.setItem('authStatus', 'AUTH');
                 sessionStorage.setItem('currUser', res[0].username);
                 sessionStorage.setItem('currName', res[0].name);
                 console.log(res);
-                store.dispatch(authAction);
+
+                store.dispatch(authAction(res[0]._id.$oid, res[0].username, res[0].following));
             }
         })
     }
@@ -38,7 +45,7 @@ class Login extends React.Component{
                 <h1 className='text-center'>Join Jupitter!</h1>
 
                 <FormGroup>
-                    <Label>Email</Label>
+                    <Label>Username</Label>
                     <Input id='username' type='text' placeholder='Username'/>
                 </FormGroup>
 

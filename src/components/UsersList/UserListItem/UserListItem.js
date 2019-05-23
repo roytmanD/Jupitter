@@ -4,6 +4,7 @@ import $ from 'jquery';
 import {store} from "../../../index";
 import {profileAction} from "../../../actions/profile-action";
 import {cancelSearchAction} from "../../../actions/search-mode-action";
+import {addToFollowingAction, removeFromFollowingAction} from "../../../actions/following-action";
 
 
 const BASE_URL = 'https://api.mlab.com/api/1/databases/jupitter';
@@ -42,12 +43,14 @@ class UserListItem extends React.Component{
         //second api call unreachable
         let following = new Set(this.props.user.following);
         let followingQ = following.size;
-
-        console.log(following);
         following.add(this.state.user.username);
-console.log(following);
         if(following.size === followingQ){
             following.delete(this.state.user.username);
+            console.log(this.state.user.username);
+            // store.dispatch(removeFromFollowingAction(this.state.user.username));
+        }else {
+            console.log(this.state.user.username)
+            // store.dispatch(addToFollowingAction(this.state.user.username));
         }
         let query = {"username": sessionStorage.getItem('currUser')};
         let url = `${BASE_URL}/collections/users?q=${JSON.stringify(query)}&apiKey=${API_KEY}`;
@@ -58,6 +61,7 @@ console.log(following);
             contentType: 'application/json'
         }).then(response=>{
             console.log(response);
+
 
         });
 
@@ -82,7 +86,6 @@ console.log(following);
             contentType: 'application/json'
 
         }).then(response =>{
-            console.log(response);
             this.setState({followers:followersA});
         });
 

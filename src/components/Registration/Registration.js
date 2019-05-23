@@ -86,7 +86,7 @@ const query = JSON.stringify(q);
 
                 <FormGroup>
                     <Label>Name</Label>
-                    <Input id='name' type='text' placeholder='First name'/>
+                    <Input id='name' type='text' placeholder='Name'/>
                 </FormGroup>
                 <FormGroup>
                     <Label>Bio</Label>

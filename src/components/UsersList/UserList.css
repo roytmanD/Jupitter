@@ -42,3 +42,9 @@ button.user-list-item{
     float: right;
     float: bottom;
 }
+
+
+p.no-users-msg{
+    margin-left: 35%;
+    margin-top: 20%;
+}

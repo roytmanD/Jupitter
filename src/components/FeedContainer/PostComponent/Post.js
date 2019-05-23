@@ -25,7 +25,7 @@ constructor(props){
 toProfile = (e) =>{
     e.stopPropagation();
     e.nativeEvent.stopImmediatePropagation();
-    store.dispatch(profileAction(this.props.username));
+    store.dispatch(profileAction(this.props.username, true));
 }
 
     renderPost = () =>{
@@ -39,8 +39,8 @@ toProfile = (e) =>{
                 <p>{this.props.text}</p>
                 <span className='activity'>
                 {this.props.activity.likes ? this.state.likes.length : 0} <img  onClick={this.handleLikeClick} className='activity' src={Like}/> {'   '}
-                    {this.props.activity.rejupits ? this.props.activity.rejupits.length : 0} <img className='activity' src={Rejupit}/> {'   '}
-                    {this.props.activity.replies ? this.props.activity.replies.length : 0} <img className='activity' src={Comment}/>{'   '}
+                    {this.props.activity.rejupits ? this.state.rejupits.length : 0} <img onClick={this.handleRejupitClick} className='activity' src={Rejupit}/> {'   '}
+                    {this.props.activity.replies ? this.state.replies.length : 0} <img className='activity' src={Comment}/>{'   '}
                 </span>
                 {this.props.username===sessionStorage.getItem('currUser') ? <button onClick={this.deleteJupit} className='delete-jupit'>X</button> : null}
             </div>
@@ -63,13 +63,37 @@ toProfile = (e) =>{
        let likesA = Array.from(likes);
        $.ajax({
            url: url,
-           data: JSON.stringify( { "$set" : {activity: { "likes" : likesA, "rejupits": this.props.rejupits, "replies": this.props.replies  } }} ),
+            data: JSON.stringify( { "$set" : {activity: { "likes" : likesA} }} ),
            type: 'PUT',
            contentType: 'application/json'
        }).then(res=>{
            this.setState({likes:likesA});
        });
+//  data: JSON.stringify( { "$set" : {activity: { "likes" : likesA, "rejupits": this.props.rejupits, "replies": this.props.replies  } }} ),
+   }
 
+   handleRejupitClick = () =>{
+       const postId = this.props.postId;
+       const url = `${BASE_URL}/collections/posts/${postId.$oid}?apiKey=${API_KEY}`;
+       let rejupits = new Set(this.state.rejupits);
+       const currUser = sessionStorage.getItem('currUser');
+       const OGquantity = rejupits.size;
+       rejupits.add(currUser);
+
+
+       if(rejupits.size === OGquantity){
+           rejupits.delete(currUser);
+       }
+       let rejupitsA  = Array.from(rejupits);
+       $.ajax({
+           url:url,
+           data: JSON.stringify({ "$set" : {activity: { "rejupits": rejupitsA } }}),
+           type: 'PUT',
+           contentType: 'application/json'
+       }).then(response=>{
+           console.log(response);
+           this.setState({rejupits: rejupitsA});
+       })
    }
 
     deleteJupit = () => {

@@ -5,6 +5,7 @@ import $ from 'jquery';
 import Post from './PostComponent/Post';
 import uuid from 'uuid';
 import {store} from '../../index';
+import {authAction} from "../../actions/auth-action";
 
 
 const BASE_URL = 'https://api.mlab.com/api/1/databases/jupitter';
@@ -19,7 +20,8 @@ constructor(props){
     this.state = {
         keyword: store.getState().search.by,
         items:[],
-        specifiedItems:[]
+        specifiedItems:[],
+        authorsToDisplay: []
     }
 }
     static displayName = "FeedContainer";
@@ -27,17 +29,41 @@ constructor(props){
 
     fetchPosts = () =>{
   let items=[];
-    let url = `${BASE_URL}/collections/posts?s={"absoluteRelevance":1}&sk=${skip}&l=${load}&apiKey=${API_KEY}`;
+        let query;
+        let url;
+        let authorsToDisplay =this.state.authorsToDisplay;
+        if(store.getState().authorization.user === undefined) {
+            const q = {
+                username: sessionStorage.getItem('currUser'),
+            };
+
+            let url = `${BASE_URL}/collections/users?q=${JSON.stringify(q)}&apiKey=${API_KEY}`;
+            $.ajax({url}).then(res=>{
+                if(res.length ===0){
+                    alert("ABSOLUTELY WEIRD ERROR! RRR")
+                }else {
+                    store.dispatch(authAction(res[0]._id.$oid, res[0].username, res[0].following));
+                    this.setState({authorsToDisplay: res[0].following});
+                }
+            });
+
+        }else{
+            authorsToDisplay = store.getState().authorization.user.following;
+        }
+  authorsToDisplay.push(sessionStorage.getItem('currUser'));
+   query = {"author.username": {$in : authorsToDisplay}}; //this query specifies who's posts to display
+   url = `${BASE_URL}/collections/posts?q=${JSON.stringify(query)}&s={"absoluteRelevance":1}&sk=${skip}&l=${load}&apiKey=${API_KEY}`;
 
          // if(store.getState().search.by){
         if(this.props.username){
             // let q = {text:  {$regex : `.*${store.getState().search.by}.*`}};
-            let q = {text:  {$regex : `.*${this.props.username}.*`}};
+            let q = {text:  {$regex : `.*${this.props.username}.*`}}; //TODO username? keyword must be here.
             url = `${BASE_URL}/collections/posts?q=${JSON.stringify(q)}&s={"absoluteRelevance":1}&sk=${skip}&l=${load}&apiKey=${API_KEY}`;
     }
         if(typeof store.getState().profile.username === 'string'){
      //       let q = {"author.username": store.getState().profile.username};
-            let q = {"author.username": this.props.username};
+            skip=0;
+            let q = {"author.username": store.getState().profile.username};
             url = `${BASE_URL}/collections/posts?q=${JSON.stringify(q)}&s={"absoluteRelevance":1}&sk=${skip}&l=${load}&apiKey=${API_KEY}`
         } // TODO specifying feed for inProfile mode. does not work yet.
 
@@ -67,25 +93,25 @@ constructor(props){
 
             skip+=load;
             if(this.props.username){
-                this.setState({specifiedItems: this.state.items.concat(items)});
+                this.setState({
+                    specifiedItems: this.state.items.concat(items),
+                    items: []
+                });
             }else {
-                this.setState({items: this.state.items.concat(items)});//TODO thats where the shit is going on. need to
+                this.setState({
+                    items: this.state.items.concat(items),
+                    specifiedItems: []
+                });//TODO thats where the shit is going on. need to
             }
             });
    };
 
 
-componentWillUpdate(nextProps, nextState, nextContext) {
-   if( nextProps.username !==this.props.username){
-
-   }
-}
 
     render() {
-
-    let itemsToRender = this.state.items;
+    let itemsToRender = Array.from(this.state.items);
     if(typeof this.props.username === 'string'){
-        itemsToRender = this.state.specifiedItems;
+        itemsToRender = Array.from(this.state.specifiedItems);
     }
 
 if(!store.getState().search.by) {
