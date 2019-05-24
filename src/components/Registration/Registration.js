@@ -3,6 +3,7 @@ import {Button, Form, FormGroup, Label, Input} from 'reactstrap';
 import $ from 'jquery';
 import {authAction} from '../../actions/auth-action';
 import {store} from "../../index";
+// import 'bootstrap/dist/css/bootstrap.css';
 
 export const BASE_URL='https://api.mlab.com/api/1/databases/jupitter';
 export const API_KEY='fsJGVMZJ2RYyINyuEhUMfuDgGzcBUEb3';

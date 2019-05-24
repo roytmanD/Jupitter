@@ -70,7 +70,6 @@ toProfile = (e) =>{
        }).then(res=>{
            this.setState({likes:likesA});
        });
-//  data: JSON.stringify( { "$set" : {activity: { "likes" : likesA, "rejupits": this.props.rejupits, "replies": this.props.replies  } }} ),
    }
 
    handleRejupitClick = () =>{

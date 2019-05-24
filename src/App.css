@@ -1,9 +1,7 @@
 .App {
-    background-color: rgba(195, 158, 33, 0.19);
-height: 700px;
     width: 100%;
-    position: absolute;
-    height: 500%;
+    background-color: rgba(195, 158, 33, 0.19);
+    height: 1000px;
 }
 
 .jupit-input-group{

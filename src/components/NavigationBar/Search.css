@@ -1,0 +1,7 @@
+input.search-field{
+    height: 2em;
+    border-radius: 10px;
+}
+input.search-btn{
+    display: none;
+}

@@ -23,12 +23,15 @@ class UserListItem extends React.Component{
     renderUserListItem = () => {
         return (
             <div className='user'>
-                <a href='#' onClick={(e)=>{this.toProfile(e)}} className='post'>
+                <div className='username-n-flw'>
+                <a  className='username-link' href='#' onClick={(e)=>{this.toProfile(e)}}>
                         <span className='name-username'>
                     <strong>{this.state.user.name + ' '}</strong>
-                            | @{this.state.user.username} </span> </a>
+                            | @{this.state.user.username}
+                        </span>
+                </a>
             <span className='flw'>{this.state.followers.length} Followers | {this.state.user.following.length} Following</span>
-
+                </div>
         {this.state.user.username === sessionStorage.getItem('currUser') ? null :
             <button className='user-list-item' onClick={this.handleFollowBtnClick}>
                 {this.state.followers.indexOf(sessionStorage.getItem('currUser'))>=0 ? "Unfollow" : "Follow"}

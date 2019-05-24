@@ -1,20 +1,49 @@
-div.user-list-item{
-    /*display: flex;*/
-    /*flex-wrap: wrap;*/
-    /*flex-direction: row;*/
-}
 span.flw{
-    float: bottom;
-    display: block;
+    float: left;
+    color: gray;
+    font-size: smaller;
+    margin-left: 1.1em;
 }
 span.name-username{
-    display: block;
     float: left;
     color: black;
     /*font-size: large;*/
+    margin: 0;
 }
 div.user-list-item{
+    padding-left: 1em;
 }
-/*p.username{*/
-    /*color: rgba(0, 0, 0, 0.63);*/
-/*}*/
+
+span.user-list-item{
+    color: black;
+    font-size: large;
+}
+
+button.user-list-item{
+    width: 100px;
+    border-radius: 50px;
+    border: 2px outset rgba(203, 128, 66, 0.77);
+    color: rgba(203, 128, 66, 0.77);
+    float: right;
+    float: bottom;
+}
+
+div.username-n-flw{
+    float: left;
+}
+
+
+a.username-link{
+    text-decoration: none;
+}
+
+a.username-link:link {
+    color: Black;
+}
+a.username-link:visited {
+    color: Black;
+}
+a.username-link:hover {
+    color: #2d3979;
+
+}

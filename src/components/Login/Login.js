@@ -41,27 +41,28 @@ class Login extends React.Component{
 
     render() {
         return(
-            <Form className='login-form'>
+            <form className='login-form'>
                 <h1 className='text-center'>Join Jupitter!</h1>
 
                 <FormGroup>
-                    <Label>Username</Label>
-                    <Input id='username' type='text' placeholder='Username'/>
+                    <label>Username</label>
+                    <input  id='username' type='text' placeholder='Username'/>
                 </FormGroup>
 
                 <FormGroup>
-                    <Label>Password</Label>
-                    <Input id='password' type='password' placeholder='Password'/>
+                    <label>Password</label>
+                    <input id='password' type='password' placeholder='Password'/>
                 </FormGroup>
 
-                <Button onClick={this.logIn} className='btn-lg btn-dark btn-block'>Log in</Button>
+                <button onClick={this.logIn} className='btn-lg btn-dark btn-block'>Log in</button>
                 <div className='text-center pt-3'>Or continue with</div>
                 <GoogleLoginButton className='mt-3 mb-3'/>
                 <div className='text-center'>
+                    Already have account?
                     <a href='/sign-up'>Sign up</a>
                     <span className='p-2'></span>
                 </div>
-            </Form>
+            </form>
         );
     }
 

@@ -11,6 +11,9 @@ import {Button} from "reactstrap";
 import {store} from '../../index';
 import {openJupitModalAction} from "../../actions/jupit-modal-action";
 import {closeProfile, profileAction} from "../../actions/profile-action";
+import Navbar from "reactstrap/es/Navbar";
+import NavLink from "reactstrap/es/NavLink";
+import NavItem from "reactstrap/es/NavItem";
 
 class NavigationBar extends React.Component{
 
@@ -32,15 +35,19 @@ class NavigationBar extends React.Component{
     render() {
         return(
             <div className="navigation-bar">
-                <div onClick={this.handleHomeClick}><img id='home' src={home} alt='Home'/>Home</div>
-                <div><img id="notifications" src={notification} alt='Notifications'/>Notifications</div>
-                <div><img id="msg" src={messages} alt='Messages'/>Messages</div>
-                <img id='logo' src={jup_logo} alt='jupitter-logo'/>
-                <div><Search id='search'/></div>
-                <div>
+                <ul className='nav-ul'>
+                <li><a onClick={this.handleHomeClick}>Home</a></li>
+                <li><a>Notifications</a></li>
+                <li><a>Messages</a></li>
+                </ul>
+                <img id="jupitter" src={jup_logo} alt='jupitter-logo'/>
+                <div className='search-jupit-profile'>
+                <div className='jupitter-search'><Search id='search'/></div>
+                <div className='nav-profile'>
                     <img onClick={(e)=>{this.toProfile(e)}} id='profile_pic' src={def_profile_pic} alt='Profile picture'/>
                 </div>
-                <Button onClick={this.openModal}><strong>Jupit</strong></Button>
+                <button className="jupit-btn" onClick={this.openModal}><strong>Jupit</strong></button>
+                </div>
             </div>
         );
     }
@@ -49,3 +56,5 @@ class NavigationBar extends React.Component{
 
 
 export default NavigationBar;
+
+

@@ -30,19 +30,6 @@ li a:hover {
 
 
 
-span.user-list-item{
-    color: black;
-    font-size: large;
-}
-
-button.user-list-item{
-    border-radius: 50px;
-    border: 2px outset rgba(203, 128, 66, 0.77);
-    color: rgba(203, 128, 66, 0.77);
-    float: right;
-    float: bottom;
-}
-
 
 p.no-users-msg{
     margin-left: 35%;

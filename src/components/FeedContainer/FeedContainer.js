@@ -61,7 +61,7 @@ constructor(props){
         if(typeof store.getState().profile.username === 'string'){
             let profileUser = store.getState().profile.username;
             let query = {$or:[{"activity.rejupits": profileUser},{"author.username":profileUser}]};
-            skip=0;
+            skip = 0;
             url = `${BASE_URL}/collections/posts?q=${JSON.stringify(query)}&s={"absoluteRelevance":1}&sk=${skip}&l=${load}&apiKey=${API_KEY}`
         }
 

@@ -1,6 +1,7 @@
 import React from "react";
 import {store} from "../../index";
 import {searchAction} from '../../actions/search-mode-action';
+import './Search.css'
 
 class SearchPage extends React.Component {
 
@@ -15,8 +16,10 @@ class SearchPage extends React.Component {
 
         return (
             <div>
-                <input id='search' type='text' placeholder='Search on Jupitter'></input>
-                <input onClick={this.toSearchMode} type='submit' value='search'/>
+                <form>
+                   <input className='search-field' id='search' type='text' placeholder='Search on Jupitter'></input>
+                    <input className='search-btn' onClick={this.toSearchMode} type='submit' value='search'/>
+                </form>
             </div>
         );
     }
