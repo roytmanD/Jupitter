@@ -63,7 +63,7 @@ constructor(props){
             let query = {$or:[{"activity.rejupits": profileUser},{"author.username":profileUser}]};
             skip=0;
             url = `${BASE_URL}/collections/posts?q=${JSON.stringify(query)}&s={"absoluteRelevance":1}&sk=${skip}&l=${load}&apiKey=${API_KEY}`
-        } 
+        }
 
         console.log(url);
         $.ajax({url}).then(response =>{

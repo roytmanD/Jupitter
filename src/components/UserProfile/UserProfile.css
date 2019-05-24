@@ -34,13 +34,13 @@ div.user-info{
 a.numbers{
     margin: 10px;
 }
-button.sign-out{
+button.sign-out-or-flw-unflw{
     display: inline;
     float: right;
     /*margin-right: 1em;*/
     border-radius: 50px;
     border: 2px ridge rgba(151, 151, 151, 0.85);
-    width: 50px;
+    width: 75px;
     height: 30px;
 }
 img.profile-avatar{
